@@ -11,3 +11,7 @@ things=$(uname)
 echo "hello $name"
 echo "your pc is $things"
 echo "$thing"
+
+for loo in "$@"; do
+        echo "thing is  $loo"
+done
