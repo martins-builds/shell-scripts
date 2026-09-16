@@ -1,5 +1,5 @@
 echo hello world
-name=martins
+read -p 'Enter your name: ' name
 echo "$name"
 thing=$(uname -a)
 things=$(uname)
