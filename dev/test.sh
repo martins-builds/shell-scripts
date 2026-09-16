@@ -1,5 +1,10 @@
 echo hello world
-read -p 'Enter your name: ' name
+if [[ -n $1 ]]; then
+        name=$1
+else
+        read -p 'Enter your name: ' name
+fi
+
 echo "$name"
 thing=$(uname -a)
 things=$(uname)
