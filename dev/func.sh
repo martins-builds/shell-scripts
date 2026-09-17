@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+greet(){
+        local name=$1
+        echo "hello $name"
+}
+
+for name in "$@"; do
+        greet "$name"
+done
