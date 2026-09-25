@@ -26,3 +26,9 @@ echo 'file is gone'
 if echo hi; then
         echo 'echo worked'
 fi
+
+max=5
+
+for ((i=0; i<max; i++)); do
+        echo "name is $i"
+done
