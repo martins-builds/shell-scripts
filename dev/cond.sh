@@ -32,3 +32,7 @@ max=5
 for ((i=0; i<max; i++)); do
         echo "name is $i"
 done
+
+while read -r line; do
+        echo "we read line by: $line"
+done
