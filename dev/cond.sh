@@ -15,3 +15,11 @@ if [[ $f == $g ]]; then
 else
         echo 'f and g are not the same'
 fi
+
+while [[ -f file.txt ]]; do
+        echo 'file.txt exists and is a file'
+        sleep 1
+done
+
+echo 'file is gone'
+~                   
