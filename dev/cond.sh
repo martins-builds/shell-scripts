@@ -22,4 +22,7 @@ while [[ -f file.txt ]]; do
 done
 
 echo 'file is gone'
-~                   
+
+if echo hi; then
+        echo 'echo worked'
+fi
