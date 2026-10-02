@@ -36,3 +36,9 @@ done
 while read -r line; do
         echo "we read line by: $line"
 done
+
+for name in "$@"; do
+        case
+                d* | b*) hello "$name"
+                *) goodbye "$name"
+        esac
