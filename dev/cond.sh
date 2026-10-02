@@ -39,6 +39,6 @@ done
 
 for name in "$@"; do
         case
-                d* | b*) hello "$name"
-                *) goodbye "$name"
+                d* | b*) hello "$name";;&
+                *) goodbye "$name";;&
         esac
