@@ -34,6 +34,10 @@ flash() {
 EOF
 fi
 
+if ! grep -q "alias gh=" "$HOME/.zshrc"; then
+    echo "alias gh='cd $HOME/Documents/GitHub'" >> "$HOME/.zshrc"
+fi
+
 brew install git cmake minicom jq tree
 mkdir -p "$HOME/Documents/GitHub/cpp-systems" "$HOME/Documents/GitHub/python-edge-ai" "$HOME/Documents/GitHub/stm32-bare-metal" "$HOME/Documents/GitHub/shell-scripts" "$HOME/Documents/GitHub/embedded-gps-gsm-tracker"
 #works
