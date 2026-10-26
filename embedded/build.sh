@@ -10,7 +10,7 @@ usage() {
 
 target="$1"
 clean=0
-if [[ "${2:-}" == "--clean" ]]; then
+if [[ "${2}" == "--clean" ]]; then
     clean=1
 fi
 
