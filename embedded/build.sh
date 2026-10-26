@@ -46,6 +46,6 @@ make -C "$dir" 2>&1 | tee -a "$log"
 
 if (( flash )); then
     command -v st-flash >/dev/null || { echo "error: st-flash not found" >&2; exit 1; }
-    st-flash write "$dir/main.bin" 0x08000000
+        st-flash write "$dir/main.bin" 0x08000000 2>&1 | tee -a "$log"
 fi
 echo "build ok: $target"
