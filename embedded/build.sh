@@ -32,11 +32,17 @@ dir="$PROJECTS_DIR/$target"
 
 [[ -d "$dir" ]] || { echo "error: no such project: $dir" >&2; exit 1; }
 
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+log_dir="$script_dir/logs"
+mkdir -p "$log_dir"
+log="$log_dir/${target}_$(date +%Y%m%d_%H%M%S).log"
+echo "log: $log"
+
 if (( clean )); then
-    make -C "$dir" clean
+    make -C "$dir" clean 2>&1 | tee -a "$log"
 fi
 
-make -C "$dir"
+make -C "$dir" 2>&1 | tee -a "$log"
 
 if (( flash )); then
     command -v st-flash >/dev/null || { echo "error: st-flash not found" >&2; exit 1; }
