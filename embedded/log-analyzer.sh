@@ -17,3 +17,14 @@ duration=$(awk -F, 'NR==2{first=$1} NR>1{last=$1} END{print (last-first)/1000}' 
 echo "duration: $duration s"
 rate=$(awk -v r="$rows" -v d="$duration" 'BEGIN { print (r - 1) / d }')
 echo "rate: $rate"
+gaps=$(awk -F',' '
+  NR == 2 { prev = $1; next }
+  NR > 2  {
+    diff = $1 - prev
+    if (diff < 9.99 || diff > 10.01) gaps++
+    prev = $1
+  }
+  END { print gaps + 0 }
+' test_20261023_161736.csv)
+
+echo "Gaps: $gaps"
