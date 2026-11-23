@@ -11,13 +11,15 @@ file="$1"
 [[ -f "$file" ]] || { echo "error: no such file: $file" >&2; exit 1; }
 
 rows=$(( $(wc -l < "$file") - 1 ))
+if (( rows < 2 )); then
+    echo "error: need at least 2 samples, found $rows" >&2
+    exit 1
+fi
 echo "file:     $file"
 echo "samples:  $rows"
-duration=$(awk -F, 'NR==2{first=$1} NR>1{last=$1} END{print (last-first)/1000}' "$file")
-echo "duration: $duration s"
-rate=$(awk -v r="$rows" -v d="$duration" 'BEGIN { print (r - 1) / d }')
-echo "rate: $rate"
-gaps=$(awk -F',' '
+
+# a gap is any step between timestamps that is not about 10 ms
+gaps=$(awk -F, '
   NR == 2 { prev = $1; next }
   NR > 2  {
     diff = $1 - prev
@@ -26,4 +28,21 @@ gaps=$(awk -F',' '
   }
   END { print gaps + 0 }
 ' "$file")
+segments=$(( gaps + 1 ))
 echo "gaps:     $gaps"
+echo "segments: $segments"
+
+# duration of the continuous stretches only (gaps and resets are not counted)
+duration=$(awk -F, '
+  NR == 2 { start = $1; prev = $1; next }
+  NR > 2  {
+    diff = $1 - prev
+    if (diff < 9.99 || diff > 10.01) { total += prev - start; start = $1 }
+    prev = $1
+  }
+  END { total += prev - start; print total / 1000 }
+' "$file")
+echo "duration: $duration s"
+
+rate=$(awk -v r="$rows" -v s="$segments" -v d="$duration" 'BEGIN { print (r - s) / d }')
+echo "rate:     $rate Hz"
