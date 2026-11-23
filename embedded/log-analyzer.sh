@@ -25,6 +25,5 @@ gaps=$(awk -F',' '
     prev = $1
   }
   END { print gaps + 0 }
-' test_20261023_161736.csv)
-
-echo "Gaps: $gaps"
+' "$file")
+echo "gaps:     $gaps"
