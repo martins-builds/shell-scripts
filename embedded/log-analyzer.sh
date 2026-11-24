@@ -46,3 +46,6 @@ echo "duration: $duration s"
 
 rate=$(awk -v r="$rows" -v s="$segments" -v d="$duration" 'BEGIN { print (r - s) / d }')
 echo "rate:     $rate Hz"
+
+echo "channels:"
+awk -F, 'NR>1 { for (i=2; i<=NF; i++) sum[i] += $i } END { for (i=2; i<=NF; i++) print i, sum[i] }' "$file"
