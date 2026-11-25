@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+{ sub(/\r$/, "") }
+NR == 1 { for (i = 2; i <= NF; i++) name[i] = $i; next }
+
 usage() {
     echo "usage: $0 <recording.csv>" >&2
     exit 1
