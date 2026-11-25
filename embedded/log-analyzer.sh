@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-{ sub(/\r$/, "") }
-NR == 1 { for (i = 2; i <= NF; i++) name[i] = $i; next }
-
 usage() {
     echo "usage: $0 <recording.csv>" >&2
     exit 1
@@ -53,6 +50,8 @@ echo "rate:     $rate Hz"
 # step 4: per-channel min, max, mean
 echo "channels:"
 awk -F, '
+  { sub(/\r$/, "") }
+  NR == 1 { for (i = 2; i <= NF; i++) name[i] = $i; next }
   NR == 1 { for (i = 2; i <= NF; i++) name[i] = $i; next }
   NR == 2 { for (i = 2; i <= NF; i++) min[i] = max[i] = $i }
   {
