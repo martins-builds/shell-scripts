@@ -47,5 +47,20 @@ echo "duration: $duration s"
 rate=$(awk -v r="$rows" -v s="$segments" -v d="$duration" 'BEGIN { print (r - s) / d }')
 echo "rate:     $rate Hz"
 
+# step 4: per-channel min, max, mean
 echo "channels:"
-awk -F, 'NR>1 { for (i=2; i<=NF; i++) sum[i] += $i } END { for (i=2; i<=NF; i++) print i, sum[i] }' "$file"
+awk -F, '
+  NR == 1 { for (i = 2; i <= NF; i++) name[i] = $i; next }
+  NR == 2 { for (i = 2; i <= NF; i++) min[i] = max[i] = $i }
+  {
+    for (i = 2; i <= NF; i++) {
+      sum[i] += $i
+      if ($i < min[i]) min[i] = $i
+      if ($i > max[i]) max[i] = $i
+    }
+  }
+  END {
+    for (i = 2; i <= NF; i++)
+      printf "  %-3s min %6d  max %6d  mean %9.2f\n", name[i], min[i], max[i], sum[i] / (NR - 1)
+  }
+' "$file"
